@@ -1,0 +1,54 @@
+<head>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datasource@0.1.0"></script>
+	<!-- <script type="text/javascript" src="csv_to_chart.js"></script> -->
+</head>
+<body>
+	<div>
+		<canvas id="myChart"></canvas>
+		<script type="text/javascript">
+				var ctx = document.getElementsById("myChart");
+				var chart = new Chart(ctx, {
+				    type: 'bar',
+				    data: {
+				        datasets: [{
+				            type: 'line',
+				            yAxisID: 'temperature',
+				            backgroundColor: 'transparent',
+				            borderColor: 'rgb(255, 99, 132)',
+				            pointBackgroundColor: 'rgb(255, 99, 132)',
+				            tension: 0,
+				            fill: false
+				        }, {
+				            yAxisID: 'precipitation',
+				            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+				            borderColor: 'transparent'
+				        }]
+				    },
+				    plugins: [ChartDataSource],
+				    options: {
+				        scales: {
+				            yAxes: [{
+				                id: 'temperature',
+				                gridLines: {
+				                    drawOnChartArea: false
+				                }
+				            }, {
+				                id: 'precipitation',
+				                position: 'right',
+				                gridLines: {
+				                    drawOnChartArea: false
+				                }
+				            }]
+				        },
+				        plugins: {
+				            datasource: {
+				                url: 'sample-dataset.csv'
+				            }
+				        }
+				    }
+				});
+
+		</script>
+	</div>
+</body>

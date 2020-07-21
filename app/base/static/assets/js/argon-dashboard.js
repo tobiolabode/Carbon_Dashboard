@@ -1073,7 +1073,7 @@ var SalesChart = (function() {
             ticks: {
               callback: function(value) {
                 if (!(value % 10)) {
-                  return '$' + value + 'k';
+                  // return '$' + value + 'k';
                 }
               }
             }
@@ -1085,12 +1085,18 @@ var SalesChart = (function() {
               var label = data.datasets[item.datasetIndex].label || '';
               var yLabel = item.yLabel;
               var content = '';
+              console.log(label)
+              console.log(ylabel)
+              console.log(content)
+              console.log(item)
+
+
 
               if (data.datasets.length > 1) {
                 content += '<span class="popover-body-label mr-auto">' + label + '</span>';
               }
 
-              content += '<span class="popover-body-value">$' + yLabel + 'k</span>';
+              content += '<span class="popover-body-value">' + yLabel + '</span>';
               return content;
             }
           }
@@ -1109,7 +1115,9 @@ var SalesChart = (function() {
 
     $chart.data('chart', salesChart);
 
+
   };
+
 
 
   // Events
@@ -1119,3 +1127,95 @@ var SalesChart = (function() {
   }
 
 })();
+
+// TODO: Develop custom chart
+
+
+
+
+//
+// Charts
+//
+
+'use strict';
+
+//
+//carbonChart
+//
+
+var carbonChart = (function() {
+
+  // Variables
+
+  var $chart = $('#carbon-chart');
+
+
+  // Methods
+
+  function init($chart) {
+
+    var salesChart = new Chart($chart, {
+      type: 'line',
+      options: {
+        scales: {
+          yAxes: [{
+            gridLines: {
+              lineWidth: 1,
+              color: Charts.colors.gray[900],
+              zeroLineColor: Charts.colors.gray[900]
+            },
+            ticks: {
+              callback: function(value) {
+                if (!(value % 10)) {
+                  return 'Tons of Co2  ' + value + '';
+                }
+              }
+            }
+          }]
+        },
+        tooltips: {
+          callbacks: {
+            label: function(item, data) {
+              var label = data.datasets[item.datasetIndex].label || '';
+              var yLabel = item.yLabel;
+              var content = '';
+              console.log(label)
+              console.log(ylabel)
+              console.log(content)
+              console.log(item)
+
+
+
+              if (data.datasets.length > 1) {
+                content += '<span class="popover-body-label mr-auto">' + label + '</span>';
+              }
+
+              content += '<span class="popover-body-value"> Tons of C02' + yLabel + '</span>';
+              return content;
+            }
+          }
+        }
+      },
+      data: {
+        labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [{
+          label: 'Produced',
+          data: [0.3, 0.5, 0.6, 0.17, 0.3, 0.5, 0.6, 0.17]
+        }]
+      }
+    });
+
+    // Save to jQuery object
+
+    $chart.data('chart', carbonChart);
+
+
+  };
+
+
+
+  // Events
+
+  if ($chart.length) {
+    init($chart);
+  }
