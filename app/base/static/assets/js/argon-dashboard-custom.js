@@ -1072,9 +1072,8 @@ var SalesChart = (function() {
             },
             ticks: {
               callback: function(value) {
-                if (value) {
+                if (!(value % 10)) {
                   // return '$' + value + 'k';
-                  return value + ' Tons of CO2'
                 }
               }
             }
@@ -1085,26 +1084,29 @@ var SalesChart = (function() {
             label: function(item, data) {
               var label = data.datasets[item.datasetIndex].label || '';
               var yLabel = item.yLabel;
-              console.log(yLabel);
-              // console.log(label);
               var content = '';
+              console.log(label)
+              console.log(ylabel)
+              console.log(content)
+              console.log(item)
+
+
 
               if (data.datasets.length > 1) {
                 content += '<span class="popover-body-label mr-auto">' + label + '</span>';
               }
 
-              content += '<span class="popover-body-value">' + yLabel + ' Tons of CO2</span>';
-              console.log(content);
+              content += '<span class="popover-body-value">' + yLabel + '</span>';
               return content;
             }
           }
         }
       },
       data: {
-        labels: ['2019-02-05', '2019-02-05', '2019-02-06', '2019-02-06', '2019-02-07', '2019-02-07',  '2019-02-08', '2019-02-08'],
+        labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         datasets: [{
           label: 'Performance',
-          data: [0.74, 0.86, 0.70, 1.03, 1.28, 1.17, 1.00 , 0.56]
+          data: [0, 20, 10, 30, 15, 40, 20, 60, 60]
         }]
       }
     });
@@ -1112,8 +1114,13 @@ var SalesChart = (function() {
     // Save to jQuery object
 
     $chart.data('chart', salesChart);
+    console.log(label)
+    console.log(ylabel)
+    console.log(content)
+    console.log(item)
 
   };
+
 
 
   // Events
@@ -1122,13 +1129,108 @@ var SalesChart = (function() {
     init($chart);
   }
 
+
+  console.log(label)
+  console.log(ylabel)
+  console.log(content)
+  console.log(item)
+
 })();
 
 
-// '2019-02-05', '2019-02-05', '2019-02-06', '2019-02-06', '2019-02-07', '2019-02-07', '2019-02-08', '2019-02-08', '2019-02-09', '2019-02-09', '2019-02-10', '2019-02-10', '2019-02-11', '2019-02-11', '2019-02-12', '2019-02-12', '2019-02-13', '2019-02-13', '2019-02-14', '2019-02-14', '2019-02-15', '2019-02-15', '2019-02-16', '2019-02-16', '2019-02-17', '2019-02-17', '2019-02-18', '2019-02-18', '2019-02-19', '2019-02-19', '2019-02-20', '2019-02-20', '2019-02-21', '2019-02-21', '2019-02-22', '2019-02-22', '2019-02-23', '2019-02-23', '2019-02-24', '2019-02-24', '2019-02-25', '2019-02-25', '2019-02-26', '2019-02-26', '2019-02-27', '2019-02-27', '2019-02-28', '2019-02-28', '2019-03-01', '2019-03-01', '2019-03-02', '2019-03-02', '2019-03-03', '2019-03-03', '2019-03-04', '2019-03-04', '2019-03-05', '2019-03-05', '2019-03-06'
 
 
-// [ 0.74 , 0.86 , 0.70 , 1.03 , 1.28 , 1.17 , 1.00 , 0.56 , 1.04 , 0.90 , 0.81 , 0.46 , 1.30 , 1.38 , 1.00 , 1.08 , 1.22 , 0.53 , 0.75 , 1.25 , 0.74 , 0.22 , 0.85 , 1.26 , 0.51 , 1.03 , 0.58 , 0.36 , 1.07 , 0.38 , 0.80 , 0.73 , 0.70 , 1.32 , 0.74 , 0.87 , 0.88 , 0.95 , 0.89 , 1.09 , 0.93 , 1.28 , 0.81 , 1.25 , 0.99 , 1.36 , 0.53 , 0.83 , 1.16 , 1.09 , 0.97 , 0.87 , 0.69 , 1.01 , 1.03 , 1.13 , 1.08 , 0.92 , 0.88 ]
+// TODO: Develop custom chart
 
 
-//20
+
+
+//
+// Charts
+//
+
+'use strict';
+
+//
+//carbonChart
+//
+
+var carbonChart = (function() {
+
+  // Variables
+
+  var $chart = $('#carbon-chart');
+
+
+  // Methods
+
+  function init($chart) {
+
+    var carbonChart = new Chart($chart, {
+      type: 'line',
+      options: {
+        scales: {
+          yAxes: [{
+            gridLines: {
+              lineWidth: 1,
+              color: Charts.colors.gray[900],
+              zeroLineColor: Charts.colors.gray[900]
+            },
+            ticks: {
+              callback: function(value) {
+                if (!(value % 10)) {
+                  return 'Tons of Co2  ' + value + '';
+                }
+              }
+            }
+          }]
+        },
+        tooltips: {
+          callbacks: {
+            label: function(item, data) {
+              var label = data.datasets[item.datasetIndex].label || '';
+              var yLabel = item.yLabel;
+              var content = '';
+              console.log(label)
+              console.log(ylabel)
+              console.log(content)
+              console.log(item)
+
+
+
+              if (data.datasets.length > 1) {
+                content += '<span class="popover-body-label mr-auto">' + label + '</span>';
+              }
+
+              content += '<span class="popover-body-value"> Tons of C02' + yLabel + '</span>';
+              return content;
+            }
+          }
+        }
+      },
+      data: {
+        labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [{
+          label: 'Produced',
+          data: [0.3, 0.5, 0.6, 0.17, 0.3, 0.5, 0.6, 0.17]
+        }]
+      }
+    });
+
+    // Save to jQuery object
+
+    $chart.data('chart', carbonChart);
+
+
+  };
+
+
+
+  // Events
+
+  if ($chart.length) {
+    init($chart);
+  }
+
+
+})();
