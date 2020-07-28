@@ -970,7 +970,7 @@ var OrdersChart = (function() {
 
   var $chart = $('#chart-orders');
   var $ordersSelect = $('[name="ordersSelect"]');
-
+  var miles_list = [358.8, 354.6 ,357.5 ,369.8 ,358.9 ,355.0, 373.0]
 
   //
   // Methods
@@ -989,14 +989,17 @@ var OrdersChart = (function() {
               lineWidth: 1,
               color: '#dfe2e6',
               zeroLineColor: '#dfe2e6'
+
             },
             ticks: {
               callback: function(value) {
-                if (!(value % 10)) {
+                if (value) {
                   //return '$' + value + 'k'
                   return value
                 }
               }
+              // suggestedMax:390
+              // suggestedMin:
             }
           }]
         },
@@ -1011,7 +1014,7 @@ var OrdersChart = (function() {
                 content += '<span class="popover-body-label mr-auto">' + label + '</span>';
               }
 
-              content += '<span class="popover-body-value">' + yLabel + '</span>';
+              content += '<span class="popover-body-value">' + yLabel + ' Miles</span>';
 
               return content;
             }
@@ -1019,10 +1022,10 @@ var OrdersChart = (function() {
         }
       },
       data: {
-        labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
         datasets: [{
           label: 'Sales',
-          data: [25, 20, 30, 22, 17, 29]
+          data: miles_list
         }]
       }
     });
@@ -1049,17 +1052,41 @@ var OrdersChart = (function() {
 // Sales chart
 //
 
+
+
+
 var SalesChart = (function() {
 
   // Variables
 
   var $chart = $('#chart-sales');
+  // var [datasets]= [{ data: [] }] || chartData.datasets
+  // function addData(chart, label, data) {
+  //   chart.data.labels = label
+  //   console.log(label);
+  //   console.log(chart.data)
+  //   chart.data.datasets.forEach((dataset) => {
+  //       dataset.data = data;
+  //   });
+  //   chart.update();
+  //   }
+  //
+  // var two_data_pts = [1.04 , 0.90]
+  // var labels_new = ['2019-02-09', '2019-02-09']
+  //
+  // $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+  // var target = $(e.target).attr("href") // activated tab
+  // alert(target);
+  // addData($chart, labels_new, two_data_pts);
+  // console.log($chart);
+  // });
+
 
 
   // Methods
 
   function init($chart) {
-
+    var forecast_dates = ['2019-02-05', '2019-02-05', '2019-02-06', '2019-02-06', '2019-02-07', '2019-02-07',  '2019-02-08', '2019-02-08', '2019-02-09', '2019-02-09'];
     var salesChart = new Chart($chart, {
       type: 'line',
       options: {
@@ -1085,7 +1112,7 @@ var SalesChart = (function() {
             label: function(item, data) {
               var label = data.datasets[item.datasetIndex].label || '';
               var yLabel = item.yLabel;
-              console.log(yLabel);
+              // console.log(yLabel);
               // console.log(label);
               var content = '';
 
@@ -1094,14 +1121,14 @@ var SalesChart = (function() {
               }
 
               content += '<span class="popover-body-value">' + yLabel + ' Tons of CO2</span>';
-              console.log(content);
+              // console.log(content);
               return content;
             }
           }
         }
       },
       data: {
-        labels: ['2019-02-05', '2019-02-05', '2019-02-06', '2019-02-06', '2019-02-07', '2019-02-07',  '2019-02-08', '2019-02-08'],
+        labels:  ['2019-02-05', '2019-02-05', '2019-02-06', '2019-02-06', '2019-02-07', '2019-02-07',  '2019-02-08', '2019-02-08'],
         datasets: [{
           label: 'Performance',
           data: [0.74, 0.86, 0.70, 1.03, 1.28, 1.17, 1.00 , 0.56]
@@ -1122,8 +1149,244 @@ var SalesChart = (function() {
     init($chart);
   }
 
+  // $('#forecast_tab').on('click',function(){
+  //     $('#chart-sales').toggle()
+  //     console.log('Chart sales hidden');
+  // });
+  //
+  //
+  // // var $chart = $('#chart-sales');
+  // $('#chart-sales').on('click',function(){
+  //     $('#forecast_tab').toggle()
+  //     console.log('Chart sales tiggered');
+  // });
+
+
+  // if(document.getElementById('forecast')) {
+  //   $chart.data.labels.push(forecast_dates);
+  //   $chart.update();
+  //   console.log(forecast_dates)
+  // }
+
+
+
+
+
+  // if ($this.is('[data-update]')) {
+  //   updateOptions($this);
+  // }
+
 })();
 
+
+
+
+// var $chart = $('#chart-sales');
+//
+// const initialState = {
+//   datasets: [{ data: [] }]
+// };
+//
+// function addData(chart, data, datasetIndex) {
+//    chart.data.datasets[datasetIndex].data = data;
+//    chart.update();
+// }
+//
+//
+// setTimeout(function() {
+//    addData($chart, [45, 50, 30, 34, 61, 53, 42], 0);
+// }, 2000);
+//
+
+// TODO: make seprate chart for forcast button
+
+
+
+var chart_forecast = (function() {
+
+  // Variables
+
+  var $chart = $('#chart-forecast');
+
+
+  // Methods
+
+  function init($chart) {
+    var chart_forecast = new Chart($chart, {
+      type: 'line',
+      options: {
+        scales: {
+          yAxes: [{
+            gridLines: {
+              lineWidth: 1,
+              color: Charts.colors.gray[900],
+              zeroLineColor: Charts.colors.gray[900]
+            },
+            ticks: {
+              callback: function(value) {
+                if (value) {
+                  // return '$' + value + 'k';
+                  return value + ' Tons of CO2'
+                }
+              }
+            }
+          }]
+        },
+        tooltips: {
+          callbacks: {
+            label: function(item, data) {
+              var label = data.datasets[item.datasetIndex].label || '';
+              var yLabel = item.yLabel;
+              // console.log(yLabel);
+              // console.log(label);
+              var content = '';
+
+              if (data.datasets.length > 1) {
+                content += '<span class="popover-body-label mr-auto">' + label + '</span>';
+              }
+
+              content += '<span class="popover-body-value">' + yLabel + ' Tons of CO2</span>';
+              // console.log(content);
+              return content;
+            }
+          }
+        }
+      },
+      data: {
+        labels: ['2019-02-05', '2019-02-05', '2019-02-06', '2019-02-06', '2019-02-07', '2019-02-07',  '2019-02-08', '2019-02-08','2019-02-09', '2019-02-09'],
+        datasets: [{
+          label: 'Performance',
+          data: [0.74, 0.86, 0.70, 1.03, 1.28, 1.17, 1.00 , 0.56, 1.04 , 0.90]
+        }]
+      }
+    });
+
+    // Save to jQuery object
+
+    $chart.data('chart', chart_forecast);
+
+  };
+
+
+  // Events
+
+
+  // $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+  // var target = $(e.target).attr("href") // activated tab
+  // });
+
+
+  // $('#forecast_tab').on('click',function(){
+  //     console.log("Forcaset chart is initalised");
+  //   });
+
+  if ($chart.length) {
+    init($chart);
+  }
+
+  $('#chart-forecast').hide()
+
+
+
+  $('#forecast_tab').on('click',function(){
+      $('#chart-forecast').show()
+      $('#chart-sales').hide()
+
+   });
+
+   $('#sales_tab').on('click',function(){
+       $('#chart-sales').show()
+       $('#chart-forecast').hide()
+
+    });
+
+
+// $().button('toggle')
+
+
+// $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+//   e.target // newly activated tab
+//   e.relatedTarget // previous active tab
+// })
+//
+//   $('#chart-sales').on('click',function(){
+//     $('#forecast_tab').hide()
+//
+//
+//
+//   });
+
+
+})();
+
+
+
+
+// / Toggle options
+// function toggleOptions(elem) {
+//   var options = elem.data('add');
+//   var $target = $(elem.data('target'));
+//   var $chart = $target.data('chart');
+//
+//   if (elem.is(':checked')) {
+//
+//     // Add options
+//     pushOptions($chart, options);
+//
+//     // Update chart
+//     $chart.update();
+//   } else {
+//
+//     // Remove options
+//     popOptions($chart, options);
+//
+//     // Update chart
+//     $chart.update();
+//   }
+// }
+//
+// // Update options
+// function updateOptions(elem) {
+//   var options = elem.data('update');
+//   var $target = $(elem.data('target'));
+//   var $chart = $target.data('chart');
+//
+//   // Parse options
+//   parseOptions($chart, options);
+//
+//   // Toggle ticks
+//   toggleTicks(elem, $chart);
+//
+//   // Update chart
+//   $chart.update();
+// }
+//
+// // Toggle options
+// $toggle.on({
+//   'change': function() {
+//     var $this = $(this);
+//
+//     if ($this.is('[data-add]')) {
+//       toggleOptions($this);
+//     }
+//   },
+//   'click': function() {
+//     var $this = $(this);
+//
+//     if ($this.is('[data-update]')) {
+//       updateOptions($this);
+//     }
+//   }
+// });
+
+
+// $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+// var target = $(e.target).attr("href") // activated tab
+// alert(target);
+// SalesChart.data.labels.push(forecast_dates);
+// SalesChart.update();
+// console.log(forecast_dates)
+// });
 
 // '2019-02-05', '2019-02-05', '2019-02-06', '2019-02-06', '2019-02-07', '2019-02-07', '2019-02-08', '2019-02-08', '2019-02-09', '2019-02-09', '2019-02-10', '2019-02-10', '2019-02-11', '2019-02-11', '2019-02-12', '2019-02-12', '2019-02-13', '2019-02-13', '2019-02-14', '2019-02-14', '2019-02-15', '2019-02-15', '2019-02-16', '2019-02-16', '2019-02-17', '2019-02-17', '2019-02-18', '2019-02-18', '2019-02-19', '2019-02-19', '2019-02-20', '2019-02-20', '2019-02-21', '2019-02-21', '2019-02-22', '2019-02-22', '2019-02-23', '2019-02-23', '2019-02-24', '2019-02-24', '2019-02-25', '2019-02-25', '2019-02-26', '2019-02-26', '2019-02-27', '2019-02-27', '2019-02-28', '2019-02-28', '2019-03-01', '2019-03-01', '2019-03-02', '2019-03-02', '2019-03-03', '2019-03-03', '2019-03-04', '2019-03-04', '2019-03-05', '2019-03-05', '2019-03-06'
 
